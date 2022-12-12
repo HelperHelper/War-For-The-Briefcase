@@ -227,7 +227,7 @@ PrefabInstance:
     - target: {fileID: 5710117728478313714, guid: a4251d41f00756d488ae526725ba5794, type: 3}
       propertyPath: character
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1253380707}
     - target: {fileID: 5710117728478313714, guid: a4251d41f00756d488ae526725ba5794, type: 3}
       propertyPath: goalDestination
       value: 
@@ -282,6 +282,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4251d41f00756d488ae526725ba5794, type: 3}
+--- !u!1 &1253380707 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 48804960, guid: ec8e9ca2fbfa5d4499d33933ea5e51c4, type: 3}
+  m_PrefabInstance: {fileID: 3005696952173435002}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1641616885
 PrefabInstance:
   m_ObjectHideFlags: 0
