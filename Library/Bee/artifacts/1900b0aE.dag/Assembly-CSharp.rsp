@@ -359,9 +359,11 @@
 "Assets/Scripts/Effects/CameraShaker.cs"
 "Assets/Scripts/PlayerNav.cs"
 "Assets/Scripts/System/Controller.cs"
+"Assets/Scripts/System/GameSystem.cs"
 "Assets/Scripts/TriggerActionSystem/DissolveAction.cs"
 "Assets/Scripts/TriggerActionSystem/EnableObjectAction.cs"
 "Assets/Scripts/TriggerActionSystem/GameAction.cs"
+"Assets/Scripts/UI/GameSystemInfo.cs"
 -langversion:9.0
 
 /deterministic

@@ -13,14 +13,14 @@ public class Lock : GameTrigger
     public TMP_Text briefcaseNameText;
 
 
-    Canvas m_Canvas;
+    Canvas canvas;
 
     void Start()
     {
         briefcaseNameText.text = briefcaseType;
 
-        m_Canvas = briefcaseNameText.GetComponentInParent<Canvas>();
-        m_Canvas.gameObject.SetActive(false);
+        canvas = briefcaseNameText.GetComponentInParent<Canvas>();
+        canvas.gameObject.SetActive(false);
     }
 
 
@@ -31,23 +31,28 @@ public class Lock : GameTrigger
 
     void OnTriggerEnter(Collider other)
     {
-        m_Canvas.gameObject.SetActive(true);
+        canvas.gameObject.SetActive(true);
 
         var briefcasechain = other.GetComponent<BriefcaseChain>();
 
-        if (briefcasechain != null && briefcasechain.HaveBriefcase(briefcaseType))
+        var timer = GameSystem.Instance.Minute;
+
+      //Debug.Log("El tiempo que ha pasado es igual a minutos y segundos: " + timer + GameSystem.Instance.Second);
+      
+
+        if (briefcasechain != null && briefcasechain.HaveBriefcase(briefcaseType) && timer == 5)
         {
             briefcasechain.UseKey(briefcaseType);
             Opened();       
             //Solo destruye el script, si esta en la puerta no queremos destruir la puerta.
             Destroy(this);
-            Destroy(m_Canvas.gameObject);
+            Destroy(canvas.gameObject);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        m_Canvas.gameObject.SetActive(false);
+        canvas.gameObject.SetActive(false);
     }
 
 }

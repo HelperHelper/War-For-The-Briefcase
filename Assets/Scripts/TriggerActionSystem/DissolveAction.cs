@@ -9,22 +9,22 @@ public class DissolveAction : GameAction
 
     public GameAction[] FinishedAction;
 
-    ParticleSystem m_ParticleSystem;
-    float m_Timer = 0;
+    //ParticleSystem particleSystem;
+    float timer = 0;
 
-    Renderer[] m_Renderers;
-    MaterialPropertyBlock m_PropertyBlock;
+    Renderer[] renderers;
+    MaterialPropertyBlock propertyBlock;
 
-    int m_CutoffProperty;
+    int cutoffProperty;
 
     void Start()
     {
-        m_CutoffProperty = Shader.PropertyToID("_Cutoff");
-        m_Renderers = GetComponentsInChildren<Renderer>();
+        cutoffProperty = Shader.PropertyToID("_Cutoff");
+        renderers = GetComponentsInChildren<Renderer>();
 
-        m_PropertyBlock = new MaterialPropertyBlock();
+        propertyBlock = new MaterialPropertyBlock();
 
-        m_ParticleSystem = GetComponentInChildren<ParticleSystem>();
+       // particleSystem = GetComponentInChildren<ParticleSystem>();
 
         //var main = m_ParticleSystem.main;
         //main.duration = DissolveEffectTime;
@@ -35,17 +35,17 @@ public class DissolveAction : GameAction
 
     void Update()
     {
-        m_Timer += Time.deltaTime;
+        timer += Time.deltaTime;
 
-        float value = FadeIn.Evaluate(Mathf.InverseLerp(0, DissolveEffectTime, m_Timer));
+        float value = FadeIn.Evaluate(Mathf.InverseLerp(0, DissolveEffectTime, timer));
 
-        m_PropertyBlock.SetFloat(m_CutoffProperty, value);
-        foreach (var r in m_Renderers)
+        propertyBlock.SetFloat(cutoffProperty, value);
+        foreach (var r in renderers)
         {
-            r.SetPropertyBlock(m_PropertyBlock);
+            r.SetPropertyBlock(propertyBlock);
         }
 
-        if (m_Timer > DissolveEffectTime)
+        if (timer > DissolveEffectTime)
         {
             foreach (var gameAction in FinishedAction)
             {

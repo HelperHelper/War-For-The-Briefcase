@@ -27,23 +27,25 @@ public class Controller : MonoBehaviour
     //public AudioClip JumpingAudioCLip;
     //public AudioClip LandingAudioClip;
 
-    float m_VerticalSpeed = 0.0f;
-    bool m_IsPaused = false;
-    int m_CurrentWeapon;
+    float verticalSpeed = 0.0f;
+    bool isPaused = false;
+    //int currentWeapon;
 
-    float m_VerticalAngle, m_HorizontalAngle;
+    float verticalAngle, horizontalAngle;
     public float Speed { get; private set; } = 0.0f;
 
     public bool LockControl { get; set; }
     public bool CanPause { get; set; } = true;
 
-    public bool Grounded => m_Grounded;
+    public bool briefcase { get; set; } = false;
 
-    CharacterController m_CharacterController;
+    public bool Grounded => grounded;
 
-    bool m_Grounded;
-    float m_GroundedTimer;
-    float m_SpeedAtJump = 0.0f;
+    CharacterController characterController;
+
+    bool grounded;
+    float groundedTimer;
+    float speedAtJump = 0.0f;
 
     void Awake()
     {
@@ -55,54 +57,54 @@ public class Controller : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        m_IsPaused = false;
-        m_Grounded = true;
+        isPaused = false;
+        grounded = true;
 
         MainCamera.transform.SetParent(CameraPosition, false);
         MainCamera.transform.localPosition = Vector3.zero;
         MainCamera.transform.localRotation = Quaternion.identity;
-        m_CharacterController = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
 
-        m_VerticalAngle = 0.0f;
-        m_HorizontalAngle = transform.localEulerAngles.y;
+        verticalAngle = 0.0f;
+        horizontalAngle = transform.localEulerAngles.y;
     }
 
     void Update()
     {
 
-        bool wasGrounded = m_Grounded;
+        bool wasGrounded = grounded;
         bool loosedGrounding = false;
 
         //definimos nuestra propia conexión a tierra y no usamos la del controlador de personaje ya que el controlador de personaje puede parpadear
         //entre aterrizado/no aterrizado en pequeños pasos y similares. Así que hacemos que el controlador "no esté conectado a tierra" solo si
-        //si el controlador de caracteres reporta no estar conectado a tierra por al menos .5 segundos;
-        if (!m_CharacterController.isGrounded)
+        //si el controlador del jugador reporta no estar conectado a tierra por al menos .5 segundos;
+        if (!characterController.isGrounded)
         {
-            if (m_Grounded)
+            if (grounded)
             {
-                m_GroundedTimer += Time.deltaTime;
-                if (m_GroundedTimer >= 0.5f)
+                groundedTimer += Time.deltaTime;
+                if (groundedTimer >= 0.5f)
                 {
                     loosedGrounding = true;
-                    m_Grounded = false;
+                    grounded = false;
                 }
             }
         }
         else
         {
-            m_GroundedTimer = 0.0f;
-            m_Grounded = true;
+            groundedTimer = 0.0f;
+            grounded = true;
         }
 
         Speed = 0;
         Vector3 move = Vector3.zero;
-        if (!m_IsPaused && !LockControl)
+        if (!isPaused && !LockControl)
         {
-            // Jump (we do it first as 
-            if (m_Grounded && Input.GetButtonDown("Jump"))
+            // Jump (si el jugador está en el suelo puede saltar 
+            if (grounded && Input.GetButtonDown("Jump"))
             {
-                m_VerticalSpeed = JumpSpeed;
-                m_Grounded = false;
+                verticalSpeed = JumpSpeed;
+                grounded = false;
                 loosedGrounding = true;
                // FootstepPlayer.PlayClip(JumpingAudioCLip, 0.8f, 1.1f);
             }
@@ -114,7 +116,7 @@ public class Controller : MonoBehaviour
 
             if (loosedGrounding)
             {
-                m_SpeedAtJump = actualSpeed;
+                speedAtJump = actualSpeed;
             }
 
             // Move around with WASD - Muévete con WASD
@@ -122,30 +124,30 @@ public class Controller : MonoBehaviour
             if (move.sqrMagnitude > 1.0f)
                 move.Normalize();
 
-            float usedSpeed = m_Grounded ? actualSpeed : m_SpeedAtJump;
+            float usedSpeed = grounded ? actualSpeed : speedAtJump;
 
             move = move * usedSpeed * Time.deltaTime;
 
             move = transform.TransformDirection(move);
-            m_CharacterController.Move(move);
+            characterController.Move(move);
 
             // Turn player -Girar jugador
             float turnPlayer = Input.GetAxis("Mouse X") * MouseSensitivity;
-            m_HorizontalAngle = m_HorizontalAngle + turnPlayer;
+            horizontalAngle = horizontalAngle + turnPlayer;
 
-            if (m_HorizontalAngle > 360) m_HorizontalAngle -= 360.0f;
-            if (m_HorizontalAngle < 0) m_HorizontalAngle += 360.0f;
+            if (horizontalAngle > 360) horizontalAngle -= 360.0f;
+            if (horizontalAngle < 0) horizontalAngle += 360.0f;
 
             Vector3 currentAngles = transform.localEulerAngles;
-            currentAngles.y = m_HorizontalAngle;
+            currentAngles.y = horizontalAngle;
             transform.localEulerAngles = currentAngles;
 
             // Camera look up/down - mirar arriba y abajo con la cámara
             var turnCam = -Input.GetAxis("Mouse Y");
             turnCam = turnCam * MouseSensitivity;
-            m_VerticalAngle = Mathf.Clamp(turnCam + m_VerticalAngle, -89.0f, 89.0f);
+            verticalAngle = Mathf.Clamp(turnCam + verticalAngle, -89.0f, 89.0f);
             currentAngles = CameraPosition.transform.localEulerAngles;
-            currentAngles.x = m_VerticalAngle;
+            currentAngles.x = verticalAngle;
             CameraPosition.transform.localEulerAngles = currentAngles;
 
            // m_Weapons[m_CurrentWeapon].triggerDown = Input.GetMouseButton(0);
@@ -185,15 +187,15 @@ public class Controller : MonoBehaviour
         }
 
         // Fall down / gravity - caida gravedad
-        m_VerticalSpeed = m_VerticalSpeed - 10.0f * Time.deltaTime;
-        if (m_VerticalSpeed < -10.0f)
-            m_VerticalSpeed = -10.0f; // max fall speed
-        var verticalMove = new Vector3(0, m_VerticalSpeed * Time.deltaTime, 0);
-        var flag = m_CharacterController.Move(verticalMove);
+        verticalSpeed = verticalSpeed - 10.0f * Time.deltaTime;
+        if (verticalSpeed < -10.0f)
+            verticalSpeed = -10.0f; // max fall speed - velocidad maxima de caida
+        var verticalMove = new Vector3(0, verticalSpeed * Time.deltaTime, 0);
+        var flag = characterController.Move(verticalMove);
         if ((flag & CollisionFlags.Below) != 0)
-            m_VerticalSpeed = 0;
+            verticalSpeed = 0;
 
-        if (!wasGrounded && m_Grounded)
+        if (!wasGrounded && grounded)
         {
            // FootstepPlayer.PlayClip(LandingAudioClip, 0.8f, 1.1f);
         }
@@ -201,7 +203,7 @@ public class Controller : MonoBehaviour
 
     public void DisplayCursor(bool display)
     {
-        m_IsPaused = display;
+        isPaused = display;
         Cursor.lockState = display ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = display;
     }
