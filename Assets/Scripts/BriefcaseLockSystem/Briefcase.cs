@@ -24,6 +24,7 @@ public class Briefcase : MonoBehaviour
         if (briefcasechain != null)
         {
             briefcasechain.GrabbedBriefcase(briefcaseType);
+           // gameObject.SetActive(false);
             Destroy(gameObject);
         }
     }

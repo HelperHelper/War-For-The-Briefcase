@@ -2,41 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Clase que permite la agitación o movimiento total de la cámara
+/// </summary>
 public class CameraShaker : MonoBehaviour
 {
     public static CameraShaker Instance { get; protected set; }
 
-    float m_RemainingShakeTime;
-    float m_ShakeStrength;
-    Vector3 m_OriginalPosition;
+    float remainingShakeTime;
+    float shakeStrength;
+    Vector3 originalPosition;
 
     void Awake()
     {
         Instance = this;
-        m_OriginalPosition = transform.localPosition;
+        originalPosition = transform.localPosition;
     }
 
     void Update()
     {
-        if (m_RemainingShakeTime > 0)
+        if (remainingShakeTime > 0)
         {
-            m_RemainingShakeTime -= Time.deltaTime;
+            remainingShakeTime -= Time.deltaTime;
 
-            if (m_RemainingShakeTime <= 0)
+            if (remainingShakeTime <= 0)
             {
-                transform.localPosition = m_OriginalPosition;
+                transform.localPosition = originalPosition;
             }
             else
             {
                 Vector3 randomDir = Random.insideUnitSphere;
-                transform.localPosition = m_OriginalPosition + randomDir * m_ShakeStrength;
+                transform.localPosition = originalPosition + randomDir * shakeStrength;
             }
         }
     }
 
     public void Shake(float time, float strength)
     {
-        m_ShakeStrength = strength;
-        m_RemainingShakeTime = time;
+        shakeStrength = strength;
+        remainingShakeTime = time;
     }
 }

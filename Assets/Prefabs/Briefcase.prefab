@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2077352ff0dd34f46a497c551e91cfc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  briefcaseType: LastCase
+  briefcaseType: BriefCase
   briefcaseNameText: {fileID: 5874056218577335398}
 --- !u!1 &5305264538967986094
 GameObject:
