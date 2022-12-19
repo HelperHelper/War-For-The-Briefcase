@@ -38,11 +38,7 @@ public class GameSystem : MonoBehaviour
             Instantiate(prefab);
         }
 
-<<<<<<< HEAD
-        //PoolSystem.Create();
-=======
         PoolSystem.Create();
->>>>>>> master
     }
 
     public void ResetTimer()
@@ -103,15 +99,6 @@ public class GameSystem : MonoBehaviour
     }
 
 
-<<<<<<< HEAD
-    //public void TargetDestroyed(int score)
-    //{
-    //    m_TargetDestroyed += 1;
-    //    m_Score += score;
-
-    //    GameSystemInfo.Instance.UpdateScore(m_Score);
-    //}
-=======
     public void TargetDestroyed(int score)
     {
         targetDestroyed += 1;
@@ -119,5 +106,4 @@ public class GameSystem : MonoBehaviour
 
         GameSystemInfo.Instance.UpdateScore(score);
     }
->>>>>>> master
 }

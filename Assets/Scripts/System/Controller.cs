@@ -44,11 +44,7 @@ public class Controller : MonoBehaviour
 
     float verticalSpeed = 0.0f;
     bool isPaused = false;
-<<<<<<< HEAD
-    //int currentWeapon;
-=======
     int currentWeapon;
->>>>>>> master
 
     float verticalAngle, horizontalAngle;
     public float Speed { get; private set; } = 0.0f;
@@ -65,13 +61,10 @@ public class Controller : MonoBehaviour
     bool grounded;
     float groundedTimer;
     float speedAtJump = 0.0f;
-<<<<<<< HEAD
-=======
 
 
     List<Weapon> weapons = new List<Weapon>();
     Dictionary<int, int> ammoInventory = new Dictionary<int, int>();
->>>>>>> master
 
     void Awake()
     {
@@ -91,8 +84,6 @@ public class Controller : MonoBehaviour
         MainCamera.transform.localRotation = Quaternion.identity;
         characterController = GetComponent<CharacterController>();
 
-<<<<<<< HEAD
-=======
         for (int i = 0; i < startingWeapons.Length; ++i)
         {
             PickupWeapon(startingWeapons[i]);
@@ -111,7 +102,6 @@ public class Controller : MonoBehaviour
             ammoInventory[startingAmmo[i].ammoType] = startingAmmo[i].amount;
         }
 
->>>>>>> master
         verticalAngle = 0.0f;
         horizontalAngle = transform.localEulerAngles.y;
     }
