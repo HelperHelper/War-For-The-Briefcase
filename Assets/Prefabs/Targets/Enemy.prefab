@@ -113,8 +113,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 5710117728478314253}
+<<<<<<< HEAD
   goalDestination: {fileID: 1336435845646183430, guid: e00e87f1c98428340bf8e5b368f119e8, type: 3}
   character: {fileID: 3005696952685665279, guid: ec8e9ca2fbfa5d4499d33933ea5e51c4, type: 3}
+=======
+  goalDestination: {fileID: 0}
+  character: {fileID: 0}
+>>>>>>> master
 --- !u!195 &5710117728478314253
 NavMeshAgent:
   m_ObjectHideFlags: 0
