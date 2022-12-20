@@ -9,11 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 48804961}
-<<<<<<< HEAD:Assets/Prefabs/System/Character.prefab
-  m_Layer: 0
-=======
   m_Layer: 12
->>>>>>> master:Assets/Prefabs/Character.prefab
   m_Name: point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,8 +31,6 @@ Transform:
   m_Father: {fileID: 3005696952685665267}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD:Assets/Prefabs/System/Character.prefab
-=======
 --- !u!1 &657217921383641160
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +106,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
->>>>>>> master:Assets/Prefabs/Character.prefab
 --- !u!1 &3005696952685665279
 GameObject:
   m_ObjectHideFlags: 0

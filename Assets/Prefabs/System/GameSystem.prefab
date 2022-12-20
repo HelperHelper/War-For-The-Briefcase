@@ -46,10 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartPrefabs:
   - {fileID: 3850996113645143425, guid: 2ec0a59b8cc907041a4e4ddbac22f930, type: 3}
-<<<<<<< HEAD
-=======
   - {fileID: 2917910967279478905, guid: a6f89df4dee2a9a4fa2c0e3a89d1cf74, type: 3}
->>>>>>> master
   TargetMissedPenalty: 1
   BGMPlayer: {fileID: 0}
   EndGameSound: {fileID: 0}

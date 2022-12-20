@@ -1,7 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
-<<<<<<< HEAD
-=======
 --- !u!1 &877917070
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +164,6 @@ MonoBehaviour:
   m_Text: '/
 
 '
->>>>>>> master
 --- !u!1 &1240445701
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,8 +232,6 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
-<<<<<<< HEAD
-=======
 --- !u!1 &1620657234
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,7 +614,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
->>>>>>> master
 --- !u!1 &3850996112427143144
 GameObject:
   m_ObjectHideFlags: 0
@@ -788,11 +782,8 @@ RectTransform:
   m_Children:
   - {fileID: 3850996113868211213}
   - {fileID: 1240445704}
-<<<<<<< HEAD
-=======
   - {fileID: 2061773854}
   - {fileID: 8421407074450131320}
->>>>>>> master
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
