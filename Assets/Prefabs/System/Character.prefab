@@ -9,15 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 48804961}
-<<<<<<< HEAD
-  m_Layer: 12
-  m_Name: point
-=======
   - component: {fileID: 1918808084}
   - component: {fileID: 1918808083}
   m_Layer: 12
   m_Name: HitPlayer
->>>>>>> master
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,8 +33,6 @@ Transform:
   m_Father: {fileID: 3005696952685665267}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
-=======
 --- !u!82 &1918808084
 AudioSource:
   m_ObjectHideFlags: 0
@@ -405,7 +398,6 @@ Transform:
   m_Father: {fileID: 3005696952685665267}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
->>>>>>> master
 --- !u!1 &657217921383641160
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,11 +455,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-<<<<<<< HEAD
-  field of view: 40
-=======
   field of view: 46
->>>>>>> master
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -499,18 +487,12 @@ GameObject:
   - component: {fileID: 3005696952685665265}
   - component: {fileID: 3005696952685665264}
   - component: {fileID: 3929363866869429273}
-<<<<<<< HEAD
-  m_Layer: 12
-  m_Name: Character
-  m_TagString: Untagged
-=======
   - component: {fileID: 1853977830}
   - component: {fileID: 1853977829}
   - component: {fileID: 1853977828}
   m_Layer: 12
   m_Name: Character
   m_TagString: Player
->>>>>>> master
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -529,10 +511,7 @@ Transform:
   m_Children:
   - {fileID: 3005696953738847259}
   - {fileID: 48804961}
-<<<<<<< HEAD
-=======
   - {fileID: 1972797441}
->>>>>>> master
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -603,13 +582,6 @@ MonoBehaviour:
   CameraPosition: {fileID: 3005696953738847259}
   WeaponPosition: {fileID: 3839161197261448042}
   startingWeapons:
-<<<<<<< HEAD
-  - {fileID: 8587774576786866763, guid: 760a5cd9833938442ba8a4b54bfa8148, type: 3}
-  - {fileID: 521019951643201760, guid: a7112150bc902aa40a065439ad698c01, type: 3}
-  startingAmmo:
-  - ammoType: 70
-    amount: 60
-=======
   - {fileID: 366394943005290313, guid: c1fa9fcb8d404b1439cbd2e25bfa5b6e, type: 3}
   - {fileID: 3715891409532176575, guid: 815e0a3c2f2f7c54fbff3acc5fb95750, type: 3}
   startingAmmo:
@@ -619,17 +591,13 @@ MonoBehaviour:
     amount: 200
   - ammoType: 3
     amount: 200
->>>>>>> master
   MouseSensitivity: 2.4
   PlayerSpeed: 5
   RunningSpeed: 10
   JumpSpeed: 5
-<<<<<<< HEAD
-=======
   FootstepPlayer: {fileID: 165703441}
   JumpingAudioCLip: {fileID: 8300000, guid: 726758f273ef23f4897ae66536b71fef, type: 3}
   LandingAudioClip: {fileID: 8300000, guid: 60a1d79c4d5bbf74ca8521725e4e25d6, type: 3}
->>>>>>> master
 --- !u!143 &3005696952685665264
 CharacterController:
   m_ObjectHideFlags: 0
@@ -660,8 +628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1dfc7ef1f32061469b028007781dd2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-=======
 --- !u!136 &1853977830
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -717,7 +683,6 @@ MonoBehaviour:
   HitPlayer: {fileID: 1918808083}
   IdleSource: {fileID: 0}
   velocityRotation: 0.1
->>>>>>> master
 --- !u!1 &3005696953128105227
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,10 +714,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 108718810900033527}
-<<<<<<< HEAD
-=======
   - {fileID: 1478373090}
->>>>>>> master
   m_Father: {fileID: 3005696953738847259}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -765,13 +727,8 @@ Camera:
   m_GameObject: {fileID: 3005696953128105227}
   m_Enabled: 1
   serializedVersion: 2
-<<<<<<< HEAD
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.13995196, g: 0.16037738, b: 0.16015181, a: 0}
-=======
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0}
->>>>>>> master
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

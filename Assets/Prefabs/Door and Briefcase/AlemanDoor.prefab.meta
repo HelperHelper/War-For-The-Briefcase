@@ -1,12 +1,6 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Prefabs/Rooms.meta
-guid: f77a6e98aea609a44bca1b2a8d253c37
-folderAsset: yes
-DefaultImporter:
-========
 guid: a4687a2b22a78034098d9aaf53dde3a8
 PrefabImporter:
->>>>>>>> master:Assets/Prefabs/Door and Briefcase/AlemanDoor.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
