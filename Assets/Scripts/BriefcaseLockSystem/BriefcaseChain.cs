@@ -11,7 +11,6 @@ public class BriefcaseChain : MonoBehaviour
     {
         briefcaseTypeOwned.Add(briefcaseType);
         //Debug.Log("Recogio el maletin y ahora lo tiene el jugador");
-        Controller.Instance.briefcase = true;
         GameSystem.Instance.StartTimer();
     }
 
@@ -26,6 +25,7 @@ public class BriefcaseChain : MonoBehaviour
     // metodo que permite usar el maletin y luego de usarlo removerlo
     public void UseKey(string briefcaseType)
     {
+        //Debug.Log("Tiene el maletin y lo sigue teniendo");
         briefcaseTypeOwned.Remove(briefcaseType);
     }
 }

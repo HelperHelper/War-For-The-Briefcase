@@ -57,7 +57,7 @@ public class PoolSystem : MonoBehaviour
             return obj as T;
         }
 
-        UnityEngine.Debug.LogError("No pool was init with this prefab");
+        UnityEngine.Debug.LogError("No pool was init with this prefab" + prefab.name);
         return null;
     }
     

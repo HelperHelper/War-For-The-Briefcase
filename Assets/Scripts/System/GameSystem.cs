@@ -13,6 +13,7 @@ public class GameSystem : MonoBehaviour
     public float TargetMissedPenalty = 1.0f;
     public AudioSource BGMPlayer;
     public AudioClip EndGameSound;
+    public AudioClip GameOverSound;
 
     public float RunTime => timer;
     public int TargetCount => targetCount;
@@ -59,6 +60,18 @@ public class GameSystem : MonoBehaviour
     public void FinishRun()
     {
         BGMPlayer.clip = EndGameSound;
+        BGMPlayer.loop = false;
+        BGMPlayer.Play();
+
+        Controller.Instance.DisplayCursor(true);
+        Controller.Instance.CanPause = false;
+        //   FinalScoreUI.Instance.Display();
+    }
+
+
+    public void GameOVerRun()
+    {
+        BGMPlayer.clip = GameOverSound;
         BGMPlayer.loop = false;
         BGMPlayer.Play();
 

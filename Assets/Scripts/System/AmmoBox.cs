@@ -22,7 +22,8 @@ public class AmmoBox : MonoBehaviour
         if (c != null)
         {
             c.ChangeAmmo(ammoType, amount);
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

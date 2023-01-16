@@ -39,8 +39,8 @@ public class Controller : MonoBehaviour
     // Cabecera para controlar el audio del jugador
     [Header("Audio")]
     public RandomPlayer FootstepPlayer;
-    //public AudioClip JumpingAudioCLip;
-    //public AudioClip LandingAudioClip;
+    public AudioClip JumpingAudioCLip;
+    public AudioClip LandingAudioClip;
 
     float verticalSpeed = 0.0f;
     bool isPaused = false;
@@ -51,8 +51,10 @@ public class Controller : MonoBehaviour
 
     public bool LockControl { get; set; }
     public bool CanPause { get; set; } = true;
+    public bool changeweapon { get; set; } = false;
 
     public bool briefcase { get; set; } = false;
+    public bool enemybriefcase { get; set; } = false;
 
     public bool Grounded => grounded;
 
@@ -61,6 +63,7 @@ public class Controller : MonoBehaviour
     bool grounded;
     float groundedTimer;
     float speedAtJump = 0.0f;
+
 
 
     List<Weapon> weapons = new List<Weapon>();
@@ -108,7 +111,7 @@ public class Controller : MonoBehaviour
 
     void Update()
     {
-
+        
         bool wasGrounded = grounded;
         bool loosedGrounding = false;
 
@@ -143,12 +146,8 @@ public class Controller : MonoBehaviour
                 verticalSpeed = JumpSpeed;
                 grounded = false;
                 loosedGrounding = true;
-               // FootstepPlayer.PlayClip(JumpingAudioCLip, 0.8f, 1.1f);
+                FootstepPlayer.PlayClip(JumpingAudioCLip, 0.8f, 1.1f);
             }
-
-            // bool prunning = weapons[currentWeapon].CurrentState == Weapon.WeaponState.Idle && Input.GetButton("Run");
-
-            // Debug.Log("Que hace esto:" + prunning);
 
             bool running = weapons[currentWeapon].CurrentState == Weapon.WeaponState.Idle && Input.GetButton("Run");
             float actualSpeed = running ? RunningSpeed : PlayerSpeed;
@@ -201,10 +200,12 @@ public class Controller : MonoBehaviour
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
                 ChangeWeapon(currentWeapon - 1);
+                changeweapon = true;
             }
             else if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
                 ChangeWeapon(currentWeapon + 1);
+                changeweapon = true;
             }
 
             //Key input to change weapon
@@ -238,7 +239,7 @@ public class Controller : MonoBehaviour
 
         if (!wasGrounded && grounded)
         {
-           // FootstepPlayer.PlayClip(LandingAudioClip, 0.8f, 1.1f);
+            FootstepPlayer.PlayClip(LandingAudioClip, 0.8f, 1.1f);
         }
     }
 
@@ -291,7 +292,7 @@ public class Controller : MonoBehaviour
 
     public int GetAmmo(int ammoType)
     {
-        int value = 0;
+        int value = 0; 
         ammoInventory.TryGetValue(ammoType, out value);
 
         return value;
@@ -318,7 +319,7 @@ public class Controller : MonoBehaviour
 
     public void PlayFootstep()
     {
-        //FootstepPlayer.PlayRandom();
+        FootstepPlayer.PlayRandom();
     }
 
 

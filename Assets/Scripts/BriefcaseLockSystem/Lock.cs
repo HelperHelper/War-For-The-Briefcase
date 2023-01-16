@@ -29,7 +29,7 @@ public class Lock : GameTrigger
         Trigger();
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         canvas.gameObject.SetActive(true);
 
@@ -37,13 +37,13 @@ public class Lock : GameTrigger
 
         var timer = GameSystem.Instance.Minute;
 
-      //Debug.Log("El tiempo que ha pasado es igual a minutos y segundos: " + timer + GameSystem.Instance.Second);
+     // Debug.Log("El tiempo que ha pasado es igual a minutos y segundos: " + timer + GameSystem.Instance.Second);
       
 
-        if (briefcasechain != null && briefcasechain.HaveBriefcase(briefcaseType) && timer == 5)
+        if (briefcasechain != null && briefcasechain.HaveBriefcase(briefcaseType) && timer == 1)
         {
             briefcasechain.UseKey(briefcaseType);
-            Opened();       
+            Opened();
             //Solo destruye el script, si esta en la puerta no queremos destruir la puerta.
             Destroy(this);
             Destroy(canvas.gameObject);

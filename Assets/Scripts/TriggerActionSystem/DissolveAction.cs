@@ -14,6 +14,8 @@ public class DissolveAction : GameAction
 
     Renderer[] renderers;
     MaterialPropertyBlock propertyBlock;
+   // float door;
+   public float velocityDoor = 0.02f;
 
     int cutoffProperty;
 
@@ -44,6 +46,7 @@ public class DissolveAction : GameAction
         {
             r.SetPropertyBlock(propertyBlock);
         }
+       
 
         if (timer > DissolveEffectTime)
         {
@@ -52,7 +55,46 @@ public class DissolveAction : GameAction
                 gameAction.Activated();
             }
 
-            Destroy(gameObject);
+            //Debug.Log("Que tiene la puerta:" + transform.position.y+1);
+
+           var enemybriefcase = Controller.Instance.enemybriefcase;
+            if(enemybriefcase == true && gameObject.CompareTag("Door"))
+            {
+                //Debug.Log("Enemigo en puerta abran");
+                Vector3 door = gameObject.transform.position;
+
+                door.y += velocityDoor;
+                transform.position = door;
+                if (door.y >= 7.7)
+                {
+                   // Debug.Log("Entro y la puerta esta elevada en y");
+                    velocityDoor = 0;
+                }
+            } else
+            {
+                var playerbriefcase = Controller.Instance.briefcase;
+                if(playerbriefcase == true && gameObject.CompareTag("DoorEngland"))
+                {
+                    Vector3 door = gameObject.transform.position;
+
+                    door.y += velocityDoor;
+                    transform.position = door;
+                    if (door.y >= 7.7)
+                    {
+                      //  Debug.Log("Entro y la puerta esta elevada en y");
+                        velocityDoor = 0;
+                    }
+                }
+             else
+                {
+                    // acá mostrar mensaje de que no está en la puerta correcta
+                }
+            }
+
+            
+
+            // Destroy(gameObject);
+
         }
     }
 

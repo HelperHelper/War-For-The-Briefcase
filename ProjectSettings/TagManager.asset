@@ -3,7 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Briefcase
+  - Door
+  - Enemy
+  - DoorEngland
+  - WeaponPlayer
+  - WeaponEnemy
+  - Canvas
+  - Isla
+  - BriefcaseIcon
+  - LevelUnlock
   layers:
   - Default
   - TransparentFX
@@ -13,12 +23,12 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Briefcase
+  - Weapon
+  - Target
+  - Projectile
+  - Player
+  - PlayerCollisionOnly
   - 
   - 
   - 
