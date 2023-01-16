@@ -55,13 +55,13 @@ public class Projectile : MonoBehaviour
 
         int count = Physics.OverlapSphereNonAlloc(position, ReachRadius, sphereCastPool, 1<<10);
 
-        //for (int i = 0; i < count; ++i)
-        //{
-        //    Target t = sphereCastPool[i].GetComponent<Target>();
-            
-        //    t.Got(damage);
-        //}
-        
+        for (int i = 0; i < count; ++i)
+        {
+            Health t = sphereCastPool[i].GetComponent<Health>();
+
+            t.ProjectileTakeDamage(damage);
+        }
+
         gameObject.SetActive(false);
         mrigidbody.velocity = Vector3.zero;
         mrigidbody.angularVelocity = Vector3.zero;

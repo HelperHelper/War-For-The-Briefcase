@@ -52,7 +52,7 @@ MonoBehaviour:
   reloadTime: 1.5
   clipSize: 30
   damage: 0.5
-  ammoType: 1
+  ammoType: 70
   projectilePrefab: {fileID: 0}
   projectileLaunchForce: 200
   EndPoint: {fileID: 9125261757865890827}

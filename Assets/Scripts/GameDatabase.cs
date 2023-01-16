@@ -16,6 +16,10 @@ using UnityEditorInternal;
 /// This store multiple data related to the game like the type of Ammo, the list of levels etc...
 /// When access in the editor, if it don't exit it create an instance in the Resources folder, otherwise it load it
 /// for modification.
+/// 
+/// Esto almacena múltiples datos relacionados con el juego como el tipo de Munición, la lista de niveles etc...
+/// Al acceder en el editor, si no sale crea una instancia en la carpeta Resources, de lo contrario la carga
+/// para su modificación.
 /// </summary>
 public class GameDatabase : ScriptableObject
 {

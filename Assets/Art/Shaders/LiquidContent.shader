@@ -22,7 +22,7 @@
         {
 		 Zwrite On
 		 Cull Off // we want the front and back faces
-		 AlphaToMask Off // transparency
+		 AlphaToMask On // transparency
 
          CGPROGRAM
 

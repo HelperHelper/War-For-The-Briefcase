@@ -45,6 +45,7 @@ public class Weapon : MonoBehaviour
     public float reloadTime = 2.0f;
     public int clipSize = 4;
     public float damage = 1.0f;
+   
 
     [AmmoType]
     public int ammoType = -1;
@@ -52,7 +53,9 @@ public class Weapon : MonoBehaviour
     public Projectile projectilePrefab;
     public float projectileLaunchForce = 200.0f;
 
-    public Transform EndPoint; 
+    public Transform EndPoint;
+    public LayerMask layerMask;
+
 
     public AdvancedSettings advancedSettings;
     
@@ -82,10 +85,13 @@ public class Weapon : MonoBehaviour
     }
 
     public WeaponState CurrentState => currentState;
-    public int ClipContent => clipContent;
+    public int ClipContent  => clipContent ;
     public Controller Owner => owner;
+    public WeaponIk OwnerTwo => ownerTwo;
 
     Controller owner;
+
+    WeaponIk ownerTwo;
     
     Animator animator;
     WeaponState currentState;
@@ -93,6 +99,7 @@ public class Weapon : MonoBehaviour
     float shotTimer = -1.0f;
     bool TriggerDown;
     int clipContent;
+    bool AiWeaponIk ;
 
     AudioSource source;
 
@@ -121,6 +128,7 @@ public class Weapon : MonoBehaviour
         if (PrefabRayTrail != null)
         {
             const int trailPoolSize = 16;
+           // Debug.Log("En el awake del arma el raytrail que tiene" + PrefabRayTrail);
             PoolSystem.Instance.InitPool(PrefabRayTrail, trailPoolSize);
         }
 
@@ -141,11 +149,21 @@ public class Weapon : MonoBehaviour
     public void PickedUp(Controller c)
     {
         owner = c;
+        AiWeaponIk = false;
+    }
+
+    public void PickedUpTwo(WeaponIk c)
+    {
+        ownerTwo = c;
+        AiWeaponIk = true;
     }
 
     public void PutAway()
     {
-        animator.WriteDefaultValues();
+        if (gameObject.CompareTag("WeaponPlayer"))
+        { 
+            animator.WriteDefaultValues();
+        }
         
         for (int i = 0; i < activeTrails.Count; ++i)
         {
@@ -158,42 +176,48 @@ public class Weapon : MonoBehaviour
 
     public void Selected()
     {
-        var ammoRemaining = owner.GetAmmo(ammoType);
-        
-        if(DisabledOnEmpty)
-            gameObject.SetActive(ammoRemaining != 0 || clipContent != 0);
-        
-        if(FireAnimationClip != null)
-            animator.SetFloat("fireSpeed",  FireAnimationClip.length / fireRate);
-        
-        if(ReloadAnimationClip != null)
-            animator.SetFloat("reloadSpeed", ReloadAnimationClip.length / reloadTime);
-        
-        currentState = WeaponState.Idle;
+        if (AiWeaponIk == false)
+        {
 
-        triggerDown = false;
-        shotDone = false;
-        
-        WeaponInfoUI.Instance.UpdateWeaponName(this);
-        WeaponInfoUI.Instance.UpdateClipInfo(this);
-        WeaponInfoUI.Instance.UpdateAmmoAmount(owner.GetAmmo(ammoType));
-        
-        if(AmmoDisplay)
-            AmmoDisplay.UpdateAmount(clipContent, clipSize);
+            var ammoRemaining = owner.GetAmmo(ammoType);
 
-        if (clipContent == 0 && ammoRemaining != 0)
-        { 
-            //this can only happen if the weapon ammo reserve was empty and we picked some since then. So directly
-            //reload the clip when wepaon is selected          
-            int chargeInClip = Mathf.Min(ammoRemaining, clipSize);
-            clipContent += chargeInClip;        
-            if(AmmoDisplay)
-                AmmoDisplay.UpdateAmount(clipContent, clipSize);        
-            owner.ChangeAmmo(ammoType, -chargeInClip);       
+            if (DisabledOnEmpty)
+                gameObject.SetActive(ammoRemaining != 0 || clipContent != 0);
+
+            if (FireAnimationClip != null)
+                animator.SetFloat("fireSpeed", FireAnimationClip.length / fireRate);
+
+            if (ReloadAnimationClip != null)
+                animator.SetFloat("reloadSpeed", ReloadAnimationClip.length / reloadTime);
+
+            currentState = WeaponState.Idle;
+
+            triggerDown = false;
+            shotDone = false;
+
+            WeaponInfoUI.Instance.UpdateWeaponName(this);
             WeaponInfoUI.Instance.UpdateClipInfo(this);
+            WeaponInfoUI.Instance.UpdateAmmoAmount(owner.GetAmmo(ammoType));
+
+            if (AmmoDisplay)
+                AmmoDisplay.UpdateAmount(clipContent, clipSize);
+
+            if (clipContent == 0 && ammoRemaining != 0)
+            {
+                //this can only happen if the weapon ammo reserve was empty and we picked some since then. So directly
+                //reload the clip when wepaon is selected
+                //esto sólo puede ocurrir si la reserva de munición del arma estaba vacía y recogimos algo desde entonces. Así que directamente
+                //recargar el cargador cuando se selecciona arma  
+                int chargeInClip = Mathf.Min(ammoRemaining, clipSize);
+                clipContent += chargeInClip;
+                if (AmmoDisplay)
+                    AmmoDisplay.UpdateAmount(clipContent, clipSize);
+                owner.ChangeAmmo(ammoType, -chargeInClip);
+                WeaponInfoUI.Instance.UpdateClipInfo(this);
+            }
+
+            animator.SetTrigger("selected");
         }
-        
-        animator.SetTrigger("selected");
     }
 
     public void Fire()
@@ -202,22 +226,26 @@ public class Weapon : MonoBehaviour
             return;
         
         clipContent -= 1;
+
+      
         
         shotTimer = fireRate;
 
         if(AmmoDisplay)
             AmmoDisplay.UpdateAmount(clipContent, clipSize);
-        
+     
+
         WeaponInfoUI.Instance.UpdateClipInfo(this);
 
         //the state will only change next frame, so we set it right now.
+        //el estado sólo cambiará en el próximo frame, así que lo establecemos ahora mismo.
         currentState = WeaponState.Firing;
         
         animator.SetTrigger("fire");
 
         source.pitch = Random.Range(0.7f, 1.0f);
-        //source.PlayOneShot(FireAudioClip);
-        
+        source.PlayOneShot(FireAudioClip);
+
         CameraShaker.Instance.Shake(0.2f, 0.05f * advancedSettings.screenShakeMultiplier);
 
         if (weaponType == WeaponType.Raycast)
@@ -234,10 +262,11 @@ public class Weapon : MonoBehaviour
     }
 
 
-    void RaycastShot()
+    public void RaycastShot()
     {
 
         //compute the ratio of our spread angle over the fov to know in viewport space what is the possible offset from center
+        //calcular el ratio de nuestro ángulo de dispersión sobre el fov para saber en espacio viewport cual es el posible desplazamiento del centro
         float spreadRatio = advancedSettings.spreadAngle / Controller.Instance.MainCamera.fieldOfView;
 
         Vector2 spread = spreadRatio * Random.insideUnitCircle;
@@ -245,24 +274,44 @@ public class Weapon : MonoBehaviour
         RaycastHit hit;
         Ray r = Controller.Instance.MainCamera.ViewportPointToRay(Vector3.one * 0.5f + (Vector3)spread);
         Vector3 hitPosition = r.origin + r.direction * 200.0f;
-        
-        if (Physics.Raycast(r, out hit, 1000.0f, ~(1 << 9), QueryTriggerInteraction.Ignore))
+       // float distance = 1000.0f;
+
+
+        if (Physics.Raycast(r, out hit, 1000.0f, /*~(1 << 9)*/ layerMask, QueryTriggerInteraction.Ignore))
         {
             Renderer renderer = hit.collider.GetComponentInChildren<Renderer>();
             ImpactManager.Instance.PlayImpact(hit.point, hit.normal, renderer == null ? null : renderer.sharedMaterial);
 
             //if too close, the trail effect would look weird if it arced to hit the wall, so only correct it if far
+            //si está demasiado cerca, el efecto de estela se vería raro si se arquea para golpear la pared, así que corrígelo sólo si está lejos
             if (hit.distance > 5.0f)
                 hitPosition = hit.point;
             
-            //this is a target
-            //if (hit.collider.gameObject.layer == 10)
-            //{
-            //    Target target = hit.collider.gameObject.GetComponent<Target>();
-            //    target.Got(damage);
-            //}
+            // is a target
+            if (hit.collider.gameObject.layer == 10)
+            {
+                var hitBox = hit.collider.GetComponent<HitBox>();
+                if (hitBox)
+                {
+                    //Debug.Log("Va a dispararle al enemigo");
+                    hitBox.OnRaycastHit(this, r.direction);
+                }
+
+
+                //Health target = hit.collider.gameObject.GetComponent<Health>();
+                //target.TakeDamage(damage);
+            }
         }
 
+        //Debug.Log("que arma tiene" + ammoType);
+        // si son armas de fuego que sueltan cartuchos verifica que tenga munición y suelta los cartuchos por cada disparo
+        if (clipContent > 0)
+        {
+
+            // Debug.Log("Está entrando");
+            ShellsController rb = GetComponent<ShellsController>();
+            rb.StartShell();
+        }
 
         if (PrefabRayTrail != null)
         {
@@ -294,6 +343,7 @@ public class Weapon : MonoBehaviour
             p.gameObject.SetActive(true);
             p.Launch(this, dir, projectileLaunchForce);
         }
+
     }
 
     //For optimization, when a projectile is "destroyed" it is instead disabled and return to the weapon for reuse.
@@ -307,12 +357,15 @@ public class Weapon : MonoBehaviour
         if (currentState != WeaponState.Idle || clipContent == clipSize)
             return;
 
+        
         int remainingBullet = owner.GetAmmo(ammoType);
-
+      
         if (remainingBullet == 0)
         {
             //No more bullet, so we disable the gun so it's displayed on empty (useful e.g. for  grenade)
-            if(DisabledOnEmpty)
+            // Ya no hay bala, así que desactivamos el arma para que se muestre en vacío (útil, por ejemplo, para la granada)
+            
+            if (DisabledOnEmpty)
                 gameObject.SetActive(false);
             return;
         }
@@ -325,8 +378,9 @@ public class Weapon : MonoBehaviour
         }
 
         int chargeInClip = Mathf.Min(remainingBullet, clipSize - clipContent);
-     
+
         //the state will only change next frame, so we set it right now.
+        //el estado sólo cambiará en el próximo frame, así que lo establecemos ahora mismo.
         currentState = WeaponState.Reloading;
         
         clipContent += chargeInClip;
@@ -343,7 +397,17 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
+        if (gameObject.CompareTag("WeaponPlayer"))
+        {
+            //Debug.Log("El jugador usa su arma y actualiza las propiedades del controlador");
         UpdateControllerState();        
+
+        } 
+        else
+        if (gameObject.CompareTag("WeaponEnemy"))
+        {
+            UpdateControllerStateAI();
+        }
         
         if (shotTimer > 0)
             shotTimer -= Time.deltaTime;
@@ -372,28 +436,33 @@ public class Weapon : MonoBehaviour
 
     void UpdateControllerState()
     {
-        animator.SetFloat("speed", owner.Speed);
-        animator.SetBool("grounded", owner.Grounded);
-        
-        var info = animator.GetCurrentAnimatorStateInfo(0);
-
-        WeaponState newState;
-        if (info.shortNameHash == fireNameHash)
-            newState = WeaponState.Firing;
-        else if (info.shortNameHash == reloadNameHash)
-            newState = WeaponState.Reloading;
-        else
-            newState = WeaponState.Idle;
-
-        if (newState != currentState)
+        if (AiWeaponIk == false)
         {
-            var oldState = currentState;
-            currentState = newState;
-            
-            if (oldState == WeaponState.Firing)
-            {//we just finished firing, so check if we need to auto reload
-                if(clipContent == 0)
-                    Reload();
+            animator.SetFloat("speed", owner.Speed);
+            animator.SetBool("grounded", owner.Grounded);
+
+            var info = animator.GetCurrentAnimatorStateInfo(0);
+
+            WeaponState newState;
+            if (info.shortNameHash == fireNameHash)
+                newState = WeaponState.Firing;
+            else if (info.shortNameHash == reloadNameHash)
+                newState = WeaponState.Reloading;
+            else
+                newState = WeaponState.Idle;
+
+            if (newState != currentState)
+            {
+                var oldState = currentState;
+                currentState = newState;
+
+                if (oldState == WeaponState.Firing)
+                {//we just finished firing, so check if we need to auto reload
+                 //acabamos de terminar de disparar, asi que comprueba si necesitamos auto recargar
+
+                    if (clipContent == 0)
+                        Reload();
+                }
             }
         }
 
@@ -404,6 +473,7 @@ public class Weapon : MonoBehaviour
                 if (!shotDone)
                 {
                     shotDone = true;
+
                     Fire();
                 }
             }
@@ -411,11 +481,33 @@ public class Weapon : MonoBehaviour
                 Fire();
         }
     }
-    
+
+    void UpdateControllerStateAI()
+    {
+        if (triggerDown)
+        {
+            if (triggerType == TriggerType.Manual)
+            {
+                if (!shotDone)
+                {
+                    shotDone = true;
+
+                    Fire();
+                }
+            }
+            else
+                Fire();
+        }
+    }
+
     /// <summary>
     /// This will compute the corrected position of the muzzle flash in world space. Since the weapon camera use a
     /// different FOV than the main camera, using the muzzle spot to spawn thing rendered by the main camera will appear
     /// disconnected from the muzzle flash. So this convert the muzzle post from
+    /// world -> view weapon -> clip weapon -> inverse clip main cam -> inverse view cam -> corrected world pos
+    /// Esto calculará la posición corregida del fogonazo en el espacio del mundo. Dado que la cámara del arma utiliza un
+    /// diferente FOV que la cámara principal, usando el punto de la boca del cañón para generar algo renderizado por la cámara principal aparecerá
+    /// desconectado del fogonazo. Asi que esto convierte el muzzle post de
     /// world -> view weapon -> clip weapon -> inverse clip main cam -> inverse view cam -> corrected world pos
     /// </summary>
     /// <returns></returns>
@@ -481,79 +573,82 @@ public class AmmoTypeDrawer : PropertyDrawer
 [CustomEditor(typeof(Weapon))]
 public class WeaponEditor : Editor
 { 
-   SerializedProperty m_TriggerTypeProp;
-   SerializedProperty m_WeaponTypeProp;
-   SerializedProperty m_FireRateProp;
-   SerializedProperty m_ReloadTimeProp;
-   SerializedProperty m_ClipSizeProp;
-   SerializedProperty m_DamageProp;
-   SerializedProperty m_AmmoTypeProp;
-   SerializedProperty m_ProjectilePrefabProp;
-   SerializedProperty m_ProjectileLaunchForceProp; 
-   SerializedProperty m_EndPointProp; 
-   SerializedProperty m_AdvancedSettingsProp;
-   SerializedProperty m_FireAnimationClipProp;
-   SerializedProperty m_ReloadAnimationClipProp;
-   SerializedProperty m_FireAudioClipProp;
-   SerializedProperty m_ReloadAudioClipProp;
-   SerializedProperty m_PrefabRayTrailProp;
-   SerializedProperty m_AmmoDisplayProp;
-   SerializedProperty m_DisabledOnEmpty;
+   SerializedProperty triggerTypeProp;
+   SerializedProperty weaponTypeProp;
+   SerializedProperty fireRateProp;
+   SerializedProperty reloadTimeProp;
+   SerializedProperty clipSizeProp;
+   SerializedProperty damageProp;
+   SerializedProperty ammoTypeProp;
+   SerializedProperty projectilePrefabProp;
+   SerializedProperty projectileLaunchForceProp; 
+   SerializedProperty endPointProp;
+   SerializedProperty layerMaskProp;
+   SerializedProperty advancedSettingsProp;
+   SerializedProperty fireAnimationClipProp;
+   SerializedProperty reloadAnimationClipProp;
+   SerializedProperty fireAudioClipProp;
+   SerializedProperty reloadAudioClipProp;
+   SerializedProperty prefabRayTrailProp;
+   SerializedProperty ammoDisplayProp;
+   SerializedProperty disabledOnEmpty;
 
    void OnEnable()
    {
-       m_TriggerTypeProp = serializedObject.FindProperty("triggerType");
-       m_WeaponTypeProp = serializedObject.FindProperty("weaponType");
-       m_FireRateProp = serializedObject.FindProperty("fireRate");
-       m_ReloadTimeProp = serializedObject.FindProperty("reloadTime");
-       m_ClipSizeProp = serializedObject.FindProperty("clipSize");
-       m_DamageProp = serializedObject.FindProperty("damage");
-       m_AmmoTypeProp = serializedObject.FindProperty("ammoType");
-       m_ProjectilePrefabProp = serializedObject.FindProperty("projectilePrefab");
-       m_ProjectileLaunchForceProp = serializedObject.FindProperty("projectileLaunchForce");
-       m_EndPointProp = serializedObject.FindProperty("EndPoint");
-       m_AdvancedSettingsProp = serializedObject.FindProperty("advancedSettings");
-       m_FireAnimationClipProp = serializedObject.FindProperty("FireAnimationClip");
-       m_ReloadAnimationClipProp = serializedObject.FindProperty("ReloadAnimationClip");
-       m_FireAudioClipProp = serializedObject.FindProperty("FireAudioClip");
-       m_ReloadAudioClipProp = serializedObject.FindProperty("ReloadAudioClip");
-       m_PrefabRayTrailProp = serializedObject.FindProperty("PrefabRayTrail");
-       m_AmmoDisplayProp = serializedObject.FindProperty("AmmoDisplay");
-       m_DisabledOnEmpty = serializedObject.FindProperty("DisabledOnEmpty");
+       triggerTypeProp = serializedObject.FindProperty("triggerType");
+       weaponTypeProp = serializedObject.FindProperty("weaponType");
+       fireRateProp = serializedObject.FindProperty("fireRate");
+       reloadTimeProp = serializedObject.FindProperty("reloadTime");
+       clipSizeProp = serializedObject.FindProperty("clipSize");
+       damageProp = serializedObject.FindProperty("damage");
+       ammoTypeProp = serializedObject.FindProperty("ammoType");
+       projectilePrefabProp = serializedObject.FindProperty("projectilePrefab");
+       projectileLaunchForceProp = serializedObject.FindProperty("projectileLaunchForce");
+       endPointProp = serializedObject.FindProperty("EndPoint");
+       layerMaskProp = serializedObject.FindProperty("layerMask");
+       advancedSettingsProp = serializedObject.FindProperty("advancedSettings");
+       fireAnimationClipProp = serializedObject.FindProperty("FireAnimationClip");
+       reloadAnimationClipProp = serializedObject.FindProperty("ReloadAnimationClip");
+       fireAudioClipProp = serializedObject.FindProperty("FireAudioClip");
+       reloadAudioClipProp = serializedObject.FindProperty("ReloadAudioClip");
+       prefabRayTrailProp = serializedObject.FindProperty("PrefabRayTrail");
+       ammoDisplayProp = serializedObject.FindProperty("AmmoDisplay");
+       disabledOnEmpty = serializedObject.FindProperty("DisabledOnEmpty");
    }
 
    public override void OnInspectorGUI()
     {
         serializedObject.Update();
         
-        EditorGUILayout.PropertyField(m_TriggerTypeProp);
-        EditorGUILayout.PropertyField(m_WeaponTypeProp);
-        EditorGUILayout.PropertyField(m_FireRateProp);
-        EditorGUILayout.PropertyField(m_ReloadTimeProp);
-        EditorGUILayout.PropertyField(m_ClipSizeProp);
-        EditorGUILayout.PropertyField(m_DamageProp);
-        EditorGUILayout.PropertyField(m_AmmoTypeProp);
+        EditorGUILayout.PropertyField(triggerTypeProp);
+        EditorGUILayout.PropertyField(weaponTypeProp);
+        EditorGUILayout.PropertyField(fireRateProp);
+        EditorGUILayout.PropertyField(reloadTimeProp);
+        EditorGUILayout.PropertyField(clipSizeProp);
+        EditorGUILayout.PropertyField(damageProp);
+        EditorGUILayout.PropertyField(ammoTypeProp);
 
-        if (m_WeaponTypeProp.intValue == (int)Weapon.WeaponType.Projectile)
+        if (weaponTypeProp.intValue == (int)Weapon.WeaponType.Projectile)
         {
-            EditorGUILayout.PropertyField(m_ProjectilePrefabProp);
-            EditorGUILayout.PropertyField(m_ProjectileLaunchForceProp);
+            EditorGUILayout.PropertyField(projectilePrefabProp);
+            EditorGUILayout.PropertyField(projectileLaunchForceProp);
         }
         
-        EditorGUILayout.PropertyField(m_EndPointProp); 
-        EditorGUILayout.PropertyField(m_AdvancedSettingsProp, new GUIContent("Advance Settings"), true);
-        EditorGUILayout.PropertyField(m_FireAnimationClipProp);
-        EditorGUILayout.PropertyField(m_ReloadAnimationClipProp);
-        EditorGUILayout.PropertyField(m_FireAudioClipProp);
-        EditorGUILayout.PropertyField(m_ReloadAudioClipProp);
+        EditorGUILayout.PropertyField(endPointProp);
+        EditorGUILayout.PropertyField(layerMaskProp);
+        EditorGUILayout.PropertyField(advancedSettingsProp, new GUIContent("Advance Settings"), true);
+        EditorGUILayout.PropertyField(fireAnimationClipProp);
+        EditorGUILayout.PropertyField(reloadAnimationClipProp);
+        EditorGUILayout.PropertyField(fireAudioClipProp);
+        EditorGUILayout.PropertyField(reloadAudioClipProp);
 
-        if (m_WeaponTypeProp.intValue == (int)Weapon.WeaponType.Raycast)
+        if (weaponTypeProp.intValue == (int)Weapon.WeaponType.Raycast)
         {
-            EditorGUILayout.PropertyField(m_PrefabRayTrailProp);
+            EditorGUILayout.PropertyField(prefabRayTrailProp);
         }
 
-        EditorGUILayout.PropertyField(m_AmmoDisplayProp);
-        EditorGUILayout.PropertyField(m_DisabledOnEmpty);
+        EditorGUILayout.PropertyField(ammoDisplayProp);
+        EditorGUILayout.PropertyField(disabledOnEmpty);
 
         serializedObject.ApplyModifiedProperties();
     }
