@@ -11,6 +11,9 @@ public class GameState : MonoBehaviour
     public static GameState gameState;
     public bool unlockIsla = false;
     public bool unlockDesert = false;
+    public bool unlockCastel = false;
+    public bool unlockCementary = false;
+    public bool unlockForest = false;
     
     
     private void Awake()
@@ -41,5 +44,20 @@ public class GameState : MonoBehaviour
     public void UnlockDesert()
     {
        unlockDesert = true;
+    }
+
+    public void UnlockCastel()
+    {
+        unlockCastel = true;
+    }
+
+    public void UnlockCementary()
+    {
+        unlockCementary = true;
+    }
+
+    public void UnlockForest()
+    {
+        unlockForest = true;
     }
 }

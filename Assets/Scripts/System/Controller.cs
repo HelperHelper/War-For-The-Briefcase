@@ -256,6 +256,7 @@ public class Controller : MonoBehaviour
         if (weapons.Exists(weapon => weapon.name == prefab.name))
         {//if we already have that weapon, grant a clip size of the ammo type instead
             ChangeAmmo(prefab.ammoType, prefab.clipSize);
+          
         }
         else
         {
@@ -264,7 +265,6 @@ public class Controller : MonoBehaviour
             w.transform.localPosition = Vector3.zero;
             w.transform.localRotation = Quaternion.identity;
             w.gameObject.SetActive(false);
-
             w.PickedUp(this);
 
             weapons.Add(w);

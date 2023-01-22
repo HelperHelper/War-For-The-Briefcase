@@ -8,7 +8,8 @@ public class MenuPused : MonoBehaviour
 
     public GameObject paused;
     public GameObject options;
-   
+    public GameObject credits;
+    bool activeOptions;
 
     // Update is called once per frame
     void Update()
@@ -20,7 +21,10 @@ public class MenuPused : MonoBehaviour
             Time.timeScale = 0;
             GameSystem.Instance.StopTimer();
             Controller.Instance.enabled = false;
-           
+           if(activeOptions == true)
+            {
+                options.SetActive(false);
+            }
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
@@ -40,8 +44,11 @@ public class MenuPused : MonoBehaviour
 
         Time.timeScale = 1;
         Controller.Instance.enabled = true;
-       // GameSystem.Instance.
-        GameSystem.Instance.StartTimer();
+        // GameSystem.Instance.
+        if (Controller.Instance.briefcase == true || Controller.Instance.enemybriefcase == true)
+        {
+            GameSystem.Instance.StartTimer();
+        }
         UiAudioPlayer.PlayPositive();
         paused.SetActive(false);
         Cursor.visible = false;
@@ -53,6 +60,7 @@ public class MenuPused : MonoBehaviour
         options.SetActive(true);
         UiAudioPlayer.PlayPositive();
         paused.SetActive(false);
+        activeOptions = true;
     }
 
     public void ExitOPtions()
@@ -61,5 +69,18 @@ public class MenuPused : MonoBehaviour
         paused.SetActive(true);
     }
 
-    
+    public void Credits()
+    {
+        credits.SetActive(true);
+        paused.SetActive(false);
+        options.SetActive(false);
+    }
+
+    public void ExitCredits()
+    {
+        credits.SetActive(false);
+        paused.SetActive(false);
+        options.SetActive(true);
+    }
+
 }

@@ -591,6 +591,8 @@ MonoBehaviour:
     amount: 200
   - ammoType: 3
     amount: 200
+  - ammoType: 4
+    amount: 80
   MouseSensitivity: 2.4
   PlayerSpeed: 5
   RunningSpeed: 10
@@ -680,9 +682,11 @@ MonoBehaviour:
   briefcase: {fileID: 72493651060599029, guid: bab1fd9c8a065f046835323535687a67, type: 3}
   dieMaxTime: 5
   currentHealth: 0
+  setAlphaBlood: {r: 0, g: 0, b: 0, a: 0}
   HitPlayer: {fileID: 1918808083}
   IdleSource: {fileID: 0}
   velocityRotation: 0.1
+  playerdeath: 0
 --- !u!1 &3005696953128105227
 GameObject:
   m_ObjectHideFlags: 0

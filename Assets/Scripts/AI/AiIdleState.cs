@@ -32,6 +32,15 @@ public class AiIdleState : AiState
         {
             agent.stateMachine.ChangeState(AiStateId.AttackPlayer);
         }
+        else
+        {
+            var playerbriefcase = Controller.Instance.briefcase;
+            if (playerbriefcase == true)
+            {
+                agent.stateMachine.ChangeState(AiStateId.ChasePlayer);
+            }
+        }
+
            
     }
 

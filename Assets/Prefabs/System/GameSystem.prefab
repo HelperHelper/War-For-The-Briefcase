@@ -48,10 +48,10 @@ MonoBehaviour:
   StartPrefabs:
   - {fileID: 3850996113645143425, guid: 2ec0a59b8cc907041a4e4ddbac22f930, type: 3}
   - {fileID: 2917910967279478905, guid: a6f89df4dee2a9a4fa2c0e3a89d1cf74, type: 3}
-  - {fileID: 227585458962050011, guid: e937d043fff8d2d4cb5a1d31d3bc08fd, type: 3}
   TargetMissedPenalty: 1
   BGMPlayer: {fileID: 7597111288833216083}
-  EndGameSound: {fileID: 0}
+  EndGameSound: {fileID: 8300000, guid: 0d3dde0240d2dc04889083ac8aa19502, type: 3}
+  GameOverSound: {fileID: 8300000, guid: 37f9731b9a25768439fd66f3c094960e, type: 3}
 --- !u!1 &5845084940251052499
 GameObject:
   m_ObjectHideFlags: 0

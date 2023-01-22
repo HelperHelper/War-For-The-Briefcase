@@ -12,6 +12,10 @@ public class ManagerScene : MonoBehaviour
     [SerializeField] private GameObject nameGame;
     [SerializeField] private GameObject buttons;
     [SerializeField] private AudioSource audioRadio;
+    //[SerializeField] private GameObject menuGame;
+    [SerializeField] private GameObject miraMenu;
+    //[SerializeField] private GameObject clickContinue;
+    [SerializeField] private GameObject mira;
 
     public void MainMenu(string name)
     {
@@ -63,4 +67,20 @@ public class ManagerScene : MonoBehaviour
         audioRadio.enabled = false;
 
     }
+
+    public void MenuGame()
+    {
+        //menuGame.SetActive(true);
+        miraMenu.SetActive(true);
+        nameGame.SetActive(false);
+        //clickContinue.SetActive(false);
+        mira.SetActive(false);
+        
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
 }

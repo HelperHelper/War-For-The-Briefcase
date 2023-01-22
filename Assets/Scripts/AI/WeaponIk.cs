@@ -13,6 +13,8 @@ public class HumanBone
 
 public class WeaponIk : MonoBehaviour
 {
+    public static WeaponIk Instance { get; private set; }
+
     public Transform targetTransform;
     public Transform aimTransform;
     //public Collider playerCollider;
@@ -27,8 +29,10 @@ public class WeaponIk : MonoBehaviour
     public float distanceLimit = 1.5f;
     public float shootDistance = 50f;
     public float shootInternal = 2f;
+    public float shootRealTime = 3f;
     public float bulletSpeed = 1000.0f;
     float shootTime;
+    float interval;
     float distanceToTarget;
     public float damage = 1.0f;
 
@@ -54,6 +58,11 @@ public class WeaponIk : MonoBehaviour
 
     List<ActiveTrail> activeTrails = new List<ActiveTrail>();
 
+    public void Awake()
+    {
+        Instance = this;
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +83,7 @@ public class WeaponIk : MonoBehaviour
         }
 
         shootTime = shootInternal;
+        interval = shootInternal;
     }
 
 
@@ -141,11 +151,11 @@ public class WeaponIk : MonoBehaviour
 
     public void ShootControl()
     {
-        //shootTime -= Time.deltaTime;
+        shootRealTime -= Time.deltaTime;
 
-       // Debug.Log("Tiempo de shootTime" + shootTime);
-        //if(shootTime < 0)
-        //{
+        // Debug.Log("Tiempo de shootTime" + shootTime);
+        if (shootRealTime < 0)
+        {
             if (distanceToTarget < shootDistance)
             {
 
@@ -155,20 +165,23 @@ public class WeaponIk : MonoBehaviour
                // Vector2 spread = spreadRatio * UnityEngine.Random.insideUnitCircle;
                 //  Ray r = Controller.Instance.MainCamera.ViewportPointToRay(Vector3.one * 0.5f + (Vector3)spread);
                 RaycastHit hit;
-              //  Ray r = new Ray(aimTransform.position, transform.forward /*+ (Vector3)spread*/);
-                Ray r = new Ray(aimTransform.position, aimTransform.forward /** 0.5f*/ /*+ (Vector3)spread*/);
-                Vector3 hitPosition = r.origin + r.direction * 200.0f;
+                  //  Ray r = new Ray(aimTransform.position, transform.forward /*+ (Vector3)spread*/);
+                    Ray r = new Ray(aimTransform.position, aimTransform.forward /** 0.5f*/ /*+ (Vector3)spread*/);
+                    Vector3 hitPosition = r.origin + r.direction * 200.0f;
            
-            if (Physics.Raycast(r, out hit, 1000.0f, ~(1 << 9), QueryTriggerInteraction.Ignore))
-                {
+                if (Physics.Raycast(r, out hit, 1000.0f, ~(1 << 9), QueryTriggerInteraction.Ignore))
+                    {
                     //Renderer renderer = hit.collider.GetComponentInChildren<Renderer>();
                    
                     if (hit.distance > 5.0f)
                             hitPosition = hit.point;
+                    shootRealTime = shootTime;
 
+                   
                         // is a target
                         if (hit.collider.gameObject.layer == 12)
                         {
+                           //Debug.Log("Sigue entrando a dispararle al jugador");
                             //ImpactManager.Instance.PlayImpact(hit.point, hit.normal, renderer == null ? null : renderer.sharedMaterial);
                            // Debug.Log("Le esta disparando al jugador " + r.direction);
                             Health target = hit.collider.gameObject.GetComponent<Health>();
@@ -203,32 +216,32 @@ public class WeaponIk : MonoBehaviour
                     }
 
 
-            if (shootTime < 0)
-                shootTime -= Time.deltaTime;
+                if (interval < 0)
+                    interval -= Time.deltaTime;
 
-            Vector3[] posone = new Vector3[2];
-            for (int i = 0; i < activeTrails.Count; ++i)
-            {
-                var activeTrail = activeTrails[i];
-
-                activeTrail.renderer.GetPositions(posone);
-                activeTrail.remainingTime -= Time.deltaTime;
-
-                posone[0] += activeTrail.direction * 50.0f * Time.deltaTime;
-                posone[1] += activeTrail.direction * 50.0f * Time.deltaTime;
-
-                activeTrails[i].renderer.SetPositions(posone);
-
-                if (activeTrails[i].remainingTime <= 0f)
+                Vector3[] posone = new Vector3[2];
+                for (int i = 0; i < activeTrails.Count; ++i)
                 {
-                    activeTrails[i].renderer.gameObject.SetActive(false);
-                    activeTrails.RemoveAt(i);
-                    i--;
-                }
-            }
+                    var activeTrail = activeTrails[i];
 
+                    activeTrail.renderer.GetPositions(posone);
+                    activeTrail.remainingTime -= Time.deltaTime;
+
+                    posone[0] += activeTrail.direction * 50.0f * Time.deltaTime;
+                    posone[1] += activeTrail.direction * 50.0f * Time.deltaTime;
+
+                    activeTrails[i].renderer.SetPositions(posone);
+
+                    if (activeTrails[i].remainingTime <= 0f)
+                    {
+                        activeTrails[i].renderer.gameObject.SetActive(false);
+                        activeTrails.RemoveAt(i);
+                        i--;
+                    }
+                }
+
+            }
         }
-        //}
     }
 
 

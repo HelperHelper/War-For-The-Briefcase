@@ -11,6 +11,8 @@ public class LevelLock : MonoBehaviour
     public bool isUnlock = false;
     public GameObject text;
     public float desbloqueoLevel;
+    public GameObject dialogo;
+    public GameObject missionMenssage;
     
    
     // Start is called before the first frame update
@@ -29,7 +31,8 @@ public class LevelLock : MonoBehaviour
             
            // Debug.Log("es true");
         }
-       
+
+        StartCoroutine(MissionMenssage());
        
     }
 
@@ -41,15 +44,24 @@ public class LevelLock : MonoBehaviour
     {
         text.SetActive(true);
         StartCoroutine(Text());
+        dialogo.SetActive(true);
     }
 
     IEnumerator Text()
     {
         yield return new WaitForSeconds(5);
         text.SetActive(false);
-        
+        dialogo.SetActive(false);
 
     }
+
+     IEnumerator MissionMenssage()
+    {
+        yield return new WaitForSeconds(8);
+        missionMenssage.SetActive(false);
+
+    }
+
 
  
 }

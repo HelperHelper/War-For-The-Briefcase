@@ -38,6 +38,9 @@ public class ManagerLevels : MonoBehaviour
     {
         UnlockIsland();
         UnlockDesert();
+        UnlockCastel();
+        UnlockCementary();
+        UnlockForest();
     }
 
     public void UnlockIsland()
@@ -61,10 +64,46 @@ public class ManagerLevels : MonoBehaviour
 
         if(Unlock.unlockDesert == true)
         {
-          //ug.Log("Desierto Desbloqueado");
+          
             desertlock.SetActive(false);
             desertUnlock.SetActive(true);
         }
        
+    }
+
+    public void UnlockCastel()
+    {
+
+        if (Unlock.unlockCastel == true)
+        {
+            //Debug.Log("Desierto Castel");
+            castellock.SetActive(false);
+            castelunlock.SetActive(true);
+        }
+
+    }
+
+    public void UnlockCementary()
+    {
+
+        if (Unlock.unlockCementary == true)
+        {
+            //ug.Log("Desierto Desbloqueado");
+            cementarylock.SetActive(false);
+            cementaryUnlock.SetActive(true);
+        }
+
+    }
+
+    public void UnlockForest()
+    {
+
+        if (Unlock.unlockForest == true)
+        {
+            //ug.Log("Desierto Desbloqueado");
+            forestlock.SetActive(false);
+            forestUnlock.SetActive(true);
+        }
+
     }
 }
