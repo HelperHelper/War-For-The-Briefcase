@@ -78,14 +78,11 @@ public class AiChaseBriefcaseState : AiState
                     agent.navMeshAgent.destination = doorTransform.transform.position;
                     agent.navMeshAgent.stoppingDistance = 5f;
                     agent.stateMachine.ChangeState(AiStateId.Idle);
-        }
-                else
+                }
+                var playerbriefcase = Controller.Instance.briefcase;
+                if (playerbriefcase == true)
                 {
-                    var playerbriefcase = Controller.Instance.briefcase;
-                    if (playerbriefcase == true)
-                    {
-                      agent.stateMachine.ChangeState(AiStateId.ChasePlayer);
-                    }
+                    agent.stateMachine.ChangeState(AiStateId.ChasePlayer);
                 }
         //}
         //timer = agent.config.maxTime;

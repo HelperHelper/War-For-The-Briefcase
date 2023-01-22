@@ -51,7 +51,7 @@ MonoBehaviour:
   weaponType: 0
   fireRate: 0.1
   reloadTime: 2
-  clipSize: 8
+  clipSize: 30
   damage: 10
   ammoType: 1
   projectilePrefab: {fileID: 9176758242982795808, guid: 43e328bae3536a84eaca0891841b6f1d, type: 3}
@@ -96,7 +96,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -1973074275289771675, guid: fa5a1834792ceab4e8083ec72c8d1efc, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.23
   m_Pitch: 1
   Loop: 0
   Mute: 0

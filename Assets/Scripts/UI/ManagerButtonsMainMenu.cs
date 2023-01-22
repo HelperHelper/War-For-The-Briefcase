@@ -12,6 +12,9 @@ public class ManagerButtonsMainMenu : MonoBehaviour
     public GameObject canvasMainMenu;
     public GameObject nameGame;
     public GameObject buttons;
+    public GameObject miraMenu;
+   
+    
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +55,7 @@ public class ManagerButtonsMainMenu : MonoBehaviour
         options.SetActive(false);
         nameGame.SetActive(true);
         buttons.SetActive(true);
+        miraMenu.SetActive(true);
     }
 
     public void ExitLevels()
@@ -59,6 +63,7 @@ public class ManagerButtonsMainMenu : MonoBehaviour
         levels.SetActive(false);
         nameGame.SetActive(true);
         buttons.SetActive(true);
+        miraMenu.SetActive(true);
     }
 
     public void Credits()
@@ -66,11 +71,13 @@ public class ManagerButtonsMainMenu : MonoBehaviour
         credits.SetActive(true);
         nameGame.SetActive(false);
         buttons.SetActive(false);
+        options.SetActive(false);
     }
 
     public void ExirCredits()
     {
         credits.SetActive(false);
+        options.SetActive(true);
        
     }
 }

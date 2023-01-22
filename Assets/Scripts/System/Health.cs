@@ -14,7 +14,7 @@ public class Health : MonoBehaviour
     SkinnedMeshRenderer skinnedMeshRenderer;
     UIHealthBar healthBar;
     public GameObject briefcase;
-    public float dieMaxTime = 25f;
+    public float dieMaxTime = 2;
 
     [HideInInspector]
     public float currentHealth;
@@ -33,7 +33,8 @@ public class Health : MonoBehaviour
     public bool Destroyed => destroyed;
 
     bool destroyed = false;
-   
+  
+
 
     // Start is called before the first frame update
     void Start()
@@ -210,11 +211,11 @@ public class Health : MonoBehaviour
         //}
 
         // destroyed = true;
-        
 
-        
 
-       GameSystem.Instance.TargetDestroyed(pointValue);
+
+
+        GameSystem.Instance.TargetDestroyed(pointValue);
 
 
 
@@ -223,11 +224,6 @@ public class Health : MonoBehaviour
 
     private void Update()
     {
-        //blinkTimer -= Time.deltaTime;
-        //blinkTimer = blinkDuration;
-        //float lerp = Mathf.Clamp01(blinkTimer / blinkDuration);
-        //float intensity = (lerp * blinkIntesity);
-        //skinnedMeshRenderer.material.color = Color.red * intensity;
         if (destroyed == true)
         {
            
@@ -236,9 +232,18 @@ public class Health : MonoBehaviour
             {
                 if (gameObject.CompareTag("Enemy"))
                 {
-                    // gameObject.SetActive(false);
+                    gameObject.SetActive(false);
                     Destroy(gameObject);
-                   // Debug.Log("Destruyo al enemigo");
+                    var enemybriefcase = Controller.Instance.enemybriefcase;
+                    if (enemybriefcase == true)
+                    {
+                        GameSystem.Instance.StopTimer();
+                        GameSystem.Instance.ResetTimer();
+                        Instantiate(briefcase).transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+
+                        Controller.Instance.enemybriefcase = false;
+                    }
+                   
                     dieMaxTime = 0;
                     destroyed = false;
                 } else

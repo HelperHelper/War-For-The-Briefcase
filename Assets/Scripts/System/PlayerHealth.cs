@@ -8,20 +8,25 @@ using UnityEngine.UI;
 public class PlayerHealth : Health
 {
 
+    public static PlayerHealth Instance { get; private set; }
+
     [Header("PlayerInfo")]
   
     public float velocityRotation = 0.05f;
     bool death;
+    [HideInInspector] public bool playerdeath;
     float time = 5f;
-    
-    
 
+    public void Awake()
+    {
+        Instance = this;
+    }
 
-   
     protected override void OnStart()
     {
         UiPlayerHealthBar.Instance.UpdateMaxHealth((int)maxHealth);
         UiPlayerHealthBar.Instance.UpdateHealthInfo((int)maxHealth);
+
 
     }
 
@@ -36,21 +41,23 @@ public class PlayerHealth : Health
 
             z.z -= velocityRotation;
             time = time + Time.deltaTime;
-         
 
             Vector3 rotationToAdd = new Vector3(0, 0, z.z);
             transform.Rotate(rotationToAdd);
             Controller.Instance.MainCamera.fieldOfView -= 0.5f;
             
+            HitPlayer.source.Stop();
+            HitPlayer.source.pitch = 0;
 
             if (time >= 13)
             {
                
                 Controller.Instance.enabled = false;
-                Time.timeScale = 0;
+              
                 velocityRotation = 0;
                // Debug.Log("Ha muerto y entro al if que pausa la animación: ");
                 death = false;
+                playerdeath = true;
             }
 
         }
@@ -60,7 +67,7 @@ public class PlayerHealth : Health
     {
         death = true;
         GameOver.Instance.GameOverPlayer();
-
+        Time.timeScale = 0;
 
         var playerbriefcase = Controller.Instance.briefcase;
         if (playerbriefcase == true)

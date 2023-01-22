@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameDatabase
   m_EditorClassIdentifier: 
   ammoDatabase:
-    maxId: 4
+    maxId: 5
     entries:
     - name: Medicine phial
       id: 70
@@ -23,3 +23,5 @@ MonoBehaviour:
       id: 2
     - name: WPNCalibre60
       id: 3
+    - name: Pistol30
+      id: 4

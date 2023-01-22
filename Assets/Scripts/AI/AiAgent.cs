@@ -19,6 +19,7 @@ public class AiAgent : MonoBehaviour
     [HideInInspector] public UIHealthBar ui;
     [HideInInspector] public Transform characterTransform;
     [HideInInspector] public AiWeapons weapons;
+    
 
     private void Start()
     {
