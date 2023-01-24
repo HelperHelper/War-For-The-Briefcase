@@ -30,14 +30,17 @@ public class HealthBox : MonoBehaviour
             //Debug.Log("Recogimos vida sumo en if" + h.setAlphaBlood);
 
             UiPlayerHealthBar.Instance.SetHealthPlayerBarPercentage(h.currentHealth / h.maxHealth);
-           }
+            StatusPlayer.Instance.StatusPlayerBar(h.currentHealth, h.maxHealth);
+        }
           else
           {
             h.currentHealth += maxHealtBox;
             h.setAlphaBlood.a -= 0.3f;
             UiPlayerHealthBar.Instance.blood.color = h.setAlphaBlood;
             UiPlayerHealthBar.Instance.SetHealthPlayerBarPercentage(h.currentHealth / h.maxHealth);
-          }
+            StatusPlayer.Instance.StatusPlayerBar(h.currentHealth, h.maxHealth);
+
+        }
             UiPlayerHealthBar.Instance.UpdateHealthInfo((int)h.currentHealth);
   
   

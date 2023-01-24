@@ -158,6 +158,7 @@ public class Health : MonoBehaviour
                     setAlphaBlood.a = 1f;
                 }
                 UiPlayerHealthBar.Instance.blood.color = setAlphaBlood;
+                StatusPlayer.Instance.StatusPlayerBar(currentHealth, maxHealth);
                 //UiPlayerHealthBar.Instance.setAlphaBlood += 1f;
             }
         }
