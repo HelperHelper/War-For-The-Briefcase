@@ -19,8 +19,10 @@ public class ManagerLevels : MonoBehaviour
     public GameObject forestlock;
     public GameObject forestUnlock;
     public GameObject coming;
-    
-    GameState Unlock;
+
+
+    GameState unlock;
+   
     
 
     private void Awake()
@@ -31,79 +33,25 @@ public class ManagerLevels : MonoBehaviour
 
     private void Start()
     {
-        Unlock = GameObject.FindGameObjectWithTag("GameState").GetComponent<GameState>();
+        //unlock = GameObject.FindGameObjectWithTag("GameState").GetComponent<GameState>();
+        
     }
 
     private void Update()
     {
-        UnlockIsland();
-        UnlockDesert();
-        UnlockCastel();
-        UnlockCementary();
-        UnlockForest();
-    }
-
-    public void UnlockIsland()
-    {
         
-       if(Unlock.unlockIsla == true)
-        {
-          //Debug.Log("Isla Desbloqueada");
-            islaLock.SetActive(false);
-            islaUnlock.SetActive(true);
-            coming.SetActive(true);
-            
-        }
-           
+        
+      
+    }
+
+   
           
        
     }
 
-    public void UnlockDesert()
-    {
+  
 
-        if(Unlock.unlockDesert == true)
-        {
-          
-            desertlock.SetActive(false);
-            desertUnlock.SetActive(true);
-        }
-       
-    }
+   
 
-    public void UnlockCastel()
-    {
+   
 
-        if (Unlock.unlockCastel == true)
-        {
-            //Debug.Log("Desierto Castel");
-            castellock.SetActive(false);
-            castelunlock.SetActive(true);
-        }
-
-    }
-
-    public void UnlockCementary()
-    {
-
-        if (Unlock.unlockCementary == true)
-        {
-            //ug.Log("Desierto Desbloqueado");
-            cementarylock.SetActive(false);
-            cementaryUnlock.SetActive(true);
-        }
-
-    }
-
-    public void UnlockForest()
-    {
-
-        if (Unlock.unlockForest == true)
-        {
-            //ug.Log("Desierto Desbloqueado");
-            forestlock.SetActive(false);
-            forestUnlock.SetActive(true);
-        }
-
-    }
-}

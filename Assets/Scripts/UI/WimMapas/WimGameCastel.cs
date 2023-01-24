@@ -11,7 +11,9 @@ public class WimGameCastel : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             WimPanel.Instance.WimCastel();
-            GameState.Instance.UnlockCastel();
+            GameSystem.Instance.StopTimer();
+            GameSystem.Instance.FinishRun();
+
         }
     }
 }

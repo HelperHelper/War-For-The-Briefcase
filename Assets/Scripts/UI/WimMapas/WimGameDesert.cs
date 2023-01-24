@@ -15,8 +15,9 @@ public class WimGameDesert : MonoBehaviour
        if (other.CompareTag("Player"))
        {
             WimPanel.Instance.WimDesert();
-            GameState.Instance.UnlockDesert();
-       }
+            GameSystem.Instance.StopTimer();
+            GameSystem.Instance.FinishRun();
+        }
     }
 
 

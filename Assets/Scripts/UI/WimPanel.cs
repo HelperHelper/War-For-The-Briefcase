@@ -11,9 +11,11 @@ public class WimPanel : MonoBehaviour
 
     public GameObject isla;
     public GameObject desert;
-    //public GameObject castel;
-    //public GameObject cementary;
-    //public GameObject forest;
+    public GameObject castel;
+    public GameObject cementary;
+    public GameObject forest;
+    public GameObject unlockIsla;
+   
     //public GameObject regaloDesbloqueado;
     public MenuPused paused;
     
@@ -45,6 +47,7 @@ public class WimPanel : MonoBehaviour
         paused.enabled = false;
        // regaloDesbloqueado.SetActive(true);
         desert.SetActive(true);
+        
         gameObject.SetActive(true);
       //Debug.Log("Ganaste" + gameObject.name);
         Cursor.lockState = CursorLockMode.None;
@@ -56,8 +59,9 @@ public class WimPanel : MonoBehaviour
 
         paused.enabled = false;
         // regaloDesbloqueado.SetActive(true);
-       // castel.SetActive(true);
+        castel.SetActive(true);
         gameObject.SetActive(true);
+        
         //Debug.Log("Ganaste" + gameObject.name);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -67,7 +71,7 @@ public class WimPanel : MonoBehaviour
 
         paused.enabled = false;
         // regaloDesbloqueado.SetActive(true);
-       // cementary.SetActive(true);
+        cementary.SetActive(true);
         gameObject.SetActive(true);
         //Debug.Log("Ganaste" + gameObject.name);
         Cursor.lockState = CursorLockMode.None;
@@ -78,22 +82,24 @@ public class WimPanel : MonoBehaviour
 
         paused.enabled = false;
         // regaloDesbloqueado.SetActive(true);
-       // forest.SetActive(true);
+        forest.SetActive(true);
         gameObject.SetActive(true);
         //Debug.Log("Ganaste" + gameObject.name);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-
-
-
-    public void MainMenu()
+    
+    
+    public void MainMenuPractice()
     {
-        
+
         SceneManager.LoadScene(0);
         paused.enabled = true;
+       
 
     }
-    
+
+ 
+
 }

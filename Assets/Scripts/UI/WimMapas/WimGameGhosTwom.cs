@@ -10,7 +10,8 @@ public class WimGameGhosTwom : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             WimPanel.Instance.WimCementary();
-            GameState.Instance.UnlockCementary();
+            GameSystem.Instance.StopTimer();
+            GameSystem.Instance.FinishRun();
         }
     }
 }

@@ -15,7 +15,6 @@ public class WimGameIsla : MonoBehaviour
        if (other.CompareTag("Player"))
        {
             WimPanel.Instance.WimIsla();
-            GameState.Instance.UnlockIsla();
             GameSystem.Instance.StopTimer();
             GameSystem.Instance.FinishRun();
             //Destroy(gameObject);

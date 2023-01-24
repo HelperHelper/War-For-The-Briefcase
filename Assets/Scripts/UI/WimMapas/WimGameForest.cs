@@ -10,7 +10,8 @@ public class WimGameForest : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             WimPanel.Instance.WimForest();
-            GameState.Instance.UnlockForest();
+            GameSystem.Instance.StopTimer();
+            GameSystem.Instance.FinishRun();
         }
     }
 }
